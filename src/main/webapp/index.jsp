@@ -1,3 +1,6 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.mycompany.mda.Buses"%>
+<%@page import="com.mycompany.mda.dbHandler"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,19 +18,39 @@
         <div id="map"></div>
 
         <button onclick="getLocation()">Get current location.</button>
+        <a href="/MDA-master/index.jsp?line=316">Line 316</a>
 
         <p id="demo"></p>
-
+        <%
+            if (request.getParameter("line") != null) {
+        %>
+        <script>
+            var coords = new Array();
+            <%
+            ArrayList<Buses> busList = dbHandler.getData("SELECT * FROM buses WHERE line_number=\"" + request.getParameter("line") + "\"");
+            int i = 0;
+            for (Buses elem : busList) {
+            %>
+            coords[<%= i++%>] = [<%= elem.getLatitude()%>, <%= elem.getLongitud()%>];
+            <%
+                }
+            %>
+        </script>
+        <%
+            }
+        %>
         <script>
             var x = document.getElementById("demo");
-            var directionsService = new google.maps.DirectionsService();
-            var directionsDisplay = new google.maps.DirectionsRenderer();
+            //var directionsService = new google.maps.DirectionsService();
+            //var directionsDisplay = new google.maps.DirectionsRenderer();
             var markersArray = [];
             var map;
 
-            var request = {
+
+
+            /*var request = {
                 travelMode: google.maps.TravelMode.Transit
-            };
+            };*/
 
             // Initialize and add the map
             function initMap() {
@@ -36,7 +59,12 @@
                 // The map, centered at Uluru
                 map = new google.maps.Map(
                         document.getElementById('map'), {zoom: 12, center: uluru});
-                directionsDisplay.setMap(map);
+                //directionsDisplay.setMap(map);
+                console.log("Hola");
+                console.log(coords);
+                coords.forEach(function (each) {
+                    showBus(each[0], each[1]);
+                });
             }
 
             function getLocation() {
@@ -48,15 +76,15 @@
             }
 
             function showPosition(position) {
-                clearOverlays();
+                //clearOverlays();
                 var uluru = {lat: position.coords.latitude, lng: position.coords.longitude};
                 var marker = new google.maps.Marker({position: uluru, map: map});
                 markersArray.push(marker);
                 marker.setMap(map);
             }
-
+            /*
             function showRoute(locations) {
-                clearOverlays();
+                //clearOverlays();
                 for (i = 0; i < locations.length; i++) {
                     //editar uluru para que pille coordenadas de locations
                     var uluru = {lat: position.coords.latitude, lng: position.coords.longitude};
@@ -82,16 +110,16 @@
                         }
                     });
                 }
-            }
+            }*/
 
-            function showBus(latitude,longitude) {
-                clearOverlays();
+            function showBus(latitude, longitude) {
+                //clearOverlays();
                 var uluru = {lat: latitude, lng: longitude};
                 var marker = new google.maps.Marker({position: uluru, map: map});
-                markersArray.push(marker);
+                //markersArray.push(marker);
                 marker.setMap(map);
             }
-            
+
             function clearOverlays() {
                 for (var i = 0; i < markersArray.length; i++) {
                     markersArray[i].setMap(null);
@@ -101,7 +129,7 @@
             }
         </script>
         <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCejBxTXzvaX97aZIJo_R1AQmNkm7oDvPA &callback=initMap">
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAESbv9Td79YWvhHuflY0H9YEdRJdwja7g &callback=initMap">
         </script>
     </body>
 </html>
