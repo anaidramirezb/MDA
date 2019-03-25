@@ -4,27 +4,98 @@
 <!DOCTYPE html>
 <html>
     <head>
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
         <style>
             /* Set the size of the div element that contains the map */
             #map {
-                height: 400px;  /* The height is 400 pixels */
-                width: 100%;  /* The width is the width of the web page */
+               height: 600px;  
+                align-content: center;
             }
         </style>
     </head>
     <body>
-        <h3>My Google Maps Demo</h3>
-        <!--The div element for the map -->
-        <div id="map"></div>
 
-        <button onclick="getLocation()">Get current location.</button>
-        <a href="/MDA-master/index.jsp?line=316">Line 316</a>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
+    <!-- Code for side buttons -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class=" header dropdown col-2">
+                <h1 class="  menu-header img-header" aria-haspopup="true" aria-expanded="false">
+                    LINEAS GRAN CANARIA
+                </h1>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 316 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 302</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 303</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 305</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 306 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 307</button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 308 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 311 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-global">LINEA 327 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-LPA">LINEA 12 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-LPA">LINEA 25 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-LPA">LINEA 1 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-LPA">LINEA 4 </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg btn-block img-LPA">LINEA 5 </button>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="row">
+                    <div class="col">
+                        <div id="map">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button onclick="getLocation()">Get current location.</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       
         <p id="demo"></p>
         <%
             if (request.getParameter("line") != null) {
         %>
         <script>
+            
             var coords = new Array();
             <%
             ArrayList<Buses> busList = dbHandler.getData("SELECT * FROM buses WHERE line_number=\"" + request.getParameter("line") + "\"");
@@ -35,6 +106,7 @@
             <%
                 }
             %>
+                  
         </script>
         <%
             }
