@@ -99,7 +99,7 @@
 
             var coords = new Array();
             <%
-                ArrayList<Buses> busList = dbHandler.getData("SELECT * FROM buses WHERE line_number=\"" + request.getParameter("line") + "\"");
+                ArrayList<Buses> busList = dbHandler.getData("SELECT * FROM buses WHERE line_number=\"" + request.getParameter("line") + "\"",true);
                 int i = 0;
                 for (Buses elem : busList) {
             %>
@@ -200,7 +200,7 @@
             }
         </script>
         <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAESbv9Td79YWvhHuflY0H9YEdRJdwja7g &callback=initMap">
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCejBxTXzvaX97aZIJo_R1AQmNkm7oDvPA &callback=initMap">
         </script>
     </body>
 </html>
