@@ -85,6 +85,7 @@
                     <div class="row">
                         <div class="col">
                             <button onclick="getLocation()">Get current location.</button>
+                            <button onclick="getCurrent()">Get closest stop.</button>
                         </div>
                     </div>
                 </div>
@@ -92,27 +93,22 @@
         </div>
 
         <p id="demo"></p>
-        <%
-            if (request.getParameter("line") != null) {
-        %>
         <script>
 
             var coords = new Array();
             <%
-                ArrayList<Buses> busList = dbHandler.getData("SELECT * FROM buses WHERE line_number=\"" + request.getParameter("line") + "\"",true);
-                int i = 0;
-                for (Buses elem : busList) {
-            %>
-            coords[<%= i++%>] = [<%= elem.getLatitude()%>, <%= elem.getLongitud()%>];
-            <%
-                }
-            %>
-
-        </script>
-        <%
+            ArrayList<Buses> busList = null;
+            int i = 0;
+            if (request.getParameter("line") != null) {
+                busList = dbHandler.getData("SELECT * FROM buses WHERE line_number=\"" + request.getParameter("line") + "\"", true);
+            } else {
+                busList = dbHandler.getData("SELECT * FROM buses", true);
             }
-        %>
-        <script>
+
+            for (Buses elem : busList) {
+                %>coords[<%= i++%>] = [<%= elem.getLatitude()%>, <%= elem.getLongitud()%>];
+          <%}%>
+
             var x = document.getElementById("demo");
             //var directionsService = new google.maps.DirectionsService();
             //var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -127,15 +123,16 @@
                 map = new google.maps.Map(
                         document.getElementById('map'), {zoom: 12, center: uluru});
                 //directionsDisplay.setMap(map);
-                <% if (request.getParameter("busLocation") == null) { %>
+            <% if (request.getParameter("busLocation") == null) { 
+                if(request.getParameter("line") != null){ %>
                     coords.forEach(function (each) {
-                        showBus(each[0], each[1]);
+                        showLocation(each[0], each[1]);
                     });
-                <% } else { %>
-                    //showBus(28.099468,-15.459320);
-                    var randomLoc = Math.floor(Math.random()*coords.length);
-                    showBus(coords[randomLoc][0],coords[randomLoc][1]);
-                <% }%>
+              <%}%>
+            <% } else { %>
+                var randomLoc = Math.floor(Math.random() * coords.length);
+                showLocation(coords[randomLoc][0], coords[randomLoc][1]);
+            <% }%>
             }
 
             function getLocation() {
@@ -146,6 +143,29 @@
                 }
             }
 
+            function getCurrent() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showClosest);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+
+            function showClosest(position) {
+                var current = position.coords.latitude +
+                        position.coords.longitude;
+                var closerIndex = 0;
+                var closer = coords[0][0] + coords[0][1] - current;
+                for (var index = 1; index < coords.length; index++) {
+                    var newCloser = coords[index][0] + coords[index][1] - current;
+                    if (newCloser < closer) {
+                        closer = newCloser;
+                        closerIndex = index;
+                    }
+                }
+                showLocation(coords[closerIndex][0], coords[closerIndex][1]);
+            }
+
             function showPosition(position) {
                 //clearOverlays();
                 var uluru = {lat: position.coords.latitude, lng: position.coords.longitude};
@@ -153,6 +173,7 @@
                 markersArray.push(marker);
                 marker.setMap(map);
             }
+
             /*
              function showRoute(locations) {
              //clearOverlays();
@@ -183,8 +204,7 @@
              }
              }*/
 
-            function showBus(latitude, longitude) {
-                //clearOverlays();
+            function showLocation(latitude, longitude) {
                 var uluru = {lat: latitude, lng: longitude};
                 var marker = new google.maps.Marker({position: uluru, map: map});
                 markersArray.push(marker);
