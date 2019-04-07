@@ -28,8 +28,8 @@ public class Buses implements Serializable {
     public Buses() {
     }
 
-    public Buses(Integer stopNumber) {
-        this.stopNumber = stopNumber;
+    public Buses(Integer lineNumber) {
+        this.lineNumber = lineNumber;
     }
 
     public Integer getLineNumber() {

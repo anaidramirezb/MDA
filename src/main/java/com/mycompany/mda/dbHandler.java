@@ -24,7 +24,7 @@ public class dbHandler {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            String dbLocation = "jdbc:sqlite:C:\\Users\\hecku\\OneDrive\\Documentos\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
+            String dbLocation = "jdbc:sqlite:C:\\Users\\Heckutoru\\Documents\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
             c = DriverManager.getConnection(dbLocation);
             c.setAutoCommit(false);
 
