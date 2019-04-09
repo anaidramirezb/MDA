@@ -155,9 +155,9 @@
                 var current = position.coords.latitude +
                         position.coords.longitude;
                 var closerIndex = 0;
-                var closer = coords[0][0] + coords[0][1] - current;
+                var closer = Math.abs(coords[0][0]) + Math.abs(coords[0][1]) - current;
                 for (var index = 1; index < coords.length; index++) {
-                    var newCloser = coords[index][0] + coords[index][1] - current;
+                    var newCloser = Math.abs(coords[index][0]) + Math.abs(coords[index][1]) - current;
                     if (newCloser < closer) {
                         closer = newCloser;
                         closerIndex = index;
