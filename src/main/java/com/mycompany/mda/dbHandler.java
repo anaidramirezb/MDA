@@ -24,7 +24,7 @@ public class dbHandler {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            String dbLocation = "jdbc:sqlite:C:\\Users\\Heckutoru\\Documents\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
+            String dbLocation = getDBLocation();
             c = DriverManager.getConnection(dbLocation);
             c.setAutoCommit(false);
 
@@ -53,6 +53,44 @@ public class dbHandler {
         return busesList;
     }
 
+    public static ArrayList<Details> getDetails(String sql, boolean resultB) {
+        Connection c = null;
+        Statement stmt = null;
+        ResultSet result = null;
+        ArrayList<Details> detailsList = new ArrayList<>();
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String dbLocation = getDBLocation();
+            c = DriverManager.getConnection(dbLocation);
+            c.setAutoCommit(false);
+
+            stmt = c.createStatement();
+
+            if (resultB) {
+                result = stmt.executeQuery(sql);
+                while (result.next()) {
+                    Details details = new Details();
+                    details.setLineNumber(result.getInt("line_number"));
+                    details.setRoute(result.getString("route"));
+                    details.setSchedul(result.getString("schedul"));
+                    details.setSchedul_back(result.getString("schedul_back"));
+                    detailsList.add(details);
+                }
+            } else {
+                stmt.executeUpdate(sql);
+            }
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return detailsList;
+    }
+
     public static String insertSQL(String line_number, String stop_number, String latitude, String longitud) {
         return "INSERT INTO buses (line_number,stop_number,latitude,longitud) "
                 + "VALUES (\"" + line_number + "\",\"" + stop_number + "\",\"" + latitude + "\",\"" + longitud + "\");";
@@ -66,6 +104,14 @@ public class dbHandler {
     public static String deleteSQL(String line_number, String stop_number) {
         return "delete from buses where line_number =\" " + line_number + "\" and stop_number = \""
                 + stop_number + "\";";
+    }
+
+    public static String deleteDetailsSQL(String line_number) {
+        return "delete from details where line_number =\" " + line_number + "\";";
+    }
+
+    private static String getDBLocation() {
+        return "jdbc:sqlite:C:\\Users\\Heckutoru\\Documents\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
     }
 
 }

@@ -4,9 +4,9 @@
     Author     : Heckutoru
 --%>
 
+<%@page import="com.mycompany.mda.Details"%>
 <%@page import="com.mycompany.mda.dbHandler"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.mycompany.mda.Buses"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,54 +33,51 @@
         <table class="table ">
             <tr >
                 <th>Line number</th>
-                <th>Stop number</th> 
-                <th>Latitude</th>
-                <th>Longitud</th>
+                <th>Route</th> 
+                <th>Schedul</th>
+                <th>Schedul Back</th>
                 <th></th>
             </tr>
             <%              
-                if(request.getParameter("line") != null && request.getParameter("stop") != null){
-                    String sql = dbHandler.deleteSQL(request.getParameter("line"), request.getParameter("stop"));
+                if(request.getParameter("line") != null){
+                    String sql = dbHandler.deleteDetailsSQL(request.getParameter("line"));
                     dbHandler.getData(sql, false);
                 }
 
-                if(request.getParameter("noguagua") != null 
-                    && request.getParameter("noparada") != null
-                    && request.getParameter("latitud") != null
-                    && request.getParameter("longitud") != null){
+                if(request.getParameter("noguagua") != null){
                     
                     String sql = null;
                     if(request.getParameter("status").equals("update")){
                         sql = dbHandler.updateSQL(
                                 request.getParameter("noguagua"), 
-                                request.getParameter("noparada"), 
-                                request.getParameter("latitud"), 
-                                request.getParameter("longitud"));
+                                request.getParameter("route"), 
+                                request.getParameter("schedul"), 
+                                request.getParameter("schedul_back"));
                     } else if(request.getParameter("status").equals("insert")) {
                         sql = dbHandler.insertSQL(
                                 request.getParameter("noguagua"), 
-                                request.getParameter("noparada"), 
-                                request.getParameter("latitud"), 
-                                request.getParameter("longitud"));
+                                request.getParameter("route"), 
+                                request.getParameter("schedul"), 
+                                request.getParameter("schedul_back"));
                     }
                     
                     if(sql != null){
-                        dbHandler.getData(sql,false);
+                        dbHandler.getDetails(sql,false);
                     }
                 }
 
-                ArrayList<Buses> busList = dbHandler.getData("SELECT * FROM buses",true);
-                for (Buses result : busList) {
+                ArrayList<Details> detailsList = dbHandler.getDetails("SELECT * FROM details",true);
+                for (Details result : detailsList) {
                     out.println("<tr><td>" + result.getLineNumber()+ "</td>");
-                    out.println("<td>" + result.getStopNumber() + "</td>");
-                    out.println("<td>" + result.getLatitude() + "</td>");
-                    out.println("<td>" + result.getLongitud() + "</td>");
-                    out.println("<td><a href=\"/MDA-master/addroutes.jsp?noguagua=" + result.getLineNumber() + 
-                            "&noparada=" + result.getStopNumber() + 
-                            "&latitud=" + result.getLatitude() + 
-                            "&longitud=" + result.getLongitud() + 
+                    out.println("<td>" + result.getRoute() + "</td>");
+                    out.println("<td>" + result.getSchedul() + "</td>");
+                    out.println("<td>" + result.getSchedul_back() + "</td>");
+                    out.println("<td><a href=\"/MDA-master/addDetails.jsp?noguagua=" + result.getLineNumber() + 
+                            "&route=" + result.getRoute()+ 
+                            "&schedul=" + result.getSchedul() + 
+                            "&schedul_back=" + result.getSchedul_back() + 
                             "&status=update\">Edit. </a>");
-                    out.println("<a href=\"/MDA-master/adminData.jsp?line=" + result.getLineNumber() + "&stop=" + result.getStopNumber() + "\"> Delete.</a></td></tr>");
+                    out.println("<a href=\"/MDA-master/adminDetails.jsp?line=" + result.getLineNumber() + "\"> Delete.</a></td></tr>");
                 }
             %>
         </table>
