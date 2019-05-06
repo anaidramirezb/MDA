@@ -39,22 +39,22 @@
                 <th></th>
             </tr>
             <%              
-                if(request.getParameter("line") != null){
+                if(request.getParameter("line") != null && request.getParameter("status") == null){
                     String sql = dbHandler.deleteDetailsSQL(request.getParameter("line"));
                     dbHandler.getData(sql, false);
                 }
 
-                if(request.getParameter("noguagua") != null){
+                if(request.getParameter("noguagua") != null && request.getParameter("status") != null){
                     
                     String sql = null;
                     if(request.getParameter("status").equals("update")){
-                        sql = dbHandler.updateSQL(
+                        sql = dbHandler.updateDetailsSQL(
                                 request.getParameter("noguagua"), 
                                 request.getParameter("route"), 
                                 request.getParameter("schedul"), 
                                 request.getParameter("schedul_back"));
                     } else if(request.getParameter("status").equals("insert")) {
-                        sql = dbHandler.insertSQL(
+                        sql = dbHandler.insertDetailsSQL(
                                 request.getParameter("noguagua"), 
                                 request.getParameter("route"), 
                                 request.getParameter("schedul"), 
@@ -87,7 +87,7 @@
         </form> -->
 
         <div style="margin-left: 42%; margin-bottom: 50px;">
-            <a href="addroutes.jsp" class="btn btn-info" style="margin-top:10px;">Nuevo registro</a>  
+            <a href="addDetails.jsp" class="btn btn-info" style="margin-top:10px;">Nuevo registro</a>  
             <a href="index.jsp" class="btn btn-info" style="margin-top:10px; margin-left: 30px">Volver</a>
         </div> 
     </body>

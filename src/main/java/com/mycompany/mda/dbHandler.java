@@ -95,6 +95,16 @@ public class dbHandler {
         return "INSERT INTO buses (line_number,stop_number,latitude,longitud) "
                 + "VALUES (\"" + line_number + "\",\"" + stop_number + "\",\"" + latitude + "\",\"" + longitud + "\");";
     }
+    
+    public static String insertDetailsSQL(String line_number, String route, String schedul, String schedul_back) {
+        return "INSERT INTO details (line_number,route,schedul,schedul_back) "
+                + "VALUES (\"" + line_number + "\",\"" + route + "\",\"" + schedul + "\",\"" + schedul_back + "\");";
+    }
+
+    public static String updateDetailsSQL(String line_number, String route, String schedul, String schedul_back) {
+        return "update details set route =\"" + route + "\", schedul = \"" + schedul + "\", schedul_back= \"" + schedul_back + "\""
+                + "where line_number = " + line_number + ";";
+    }
 
     public static String updateSQL(String line_number, String stop_number, String latitude, String longitud) {
         return "update buses set latitude =\"" + latitude + "\", longitud = \"" + longitud + "\""
@@ -111,7 +121,7 @@ public class dbHandler {
     }
 
     private static String getDBLocation() {
-        return "jdbc:sqlite:C:\\Users\\Heckutoru\\Documents\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
+        return "jdbc:sqlite:C:\\Users\\hecku\\OneDrive\\Documentos\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
     }
 
 }
