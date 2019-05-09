@@ -36,7 +36,7 @@
                         <IMG SRC="styles/menu/GUAGUAS_GC.png" Width = 10% style="margin-left:30px">
                         <button type="button" class="btn btn-info img-ubi" onclick="getLocation()"></button>
                         <button type="button" class="btn btn-info img-stop" onclick="getCurrent()"></button>
-                        <button type="button" class="btn btn-info img-signo" onclick="getLocation()"></button>   
+                        <button type="button" class="btn btn-info img-signo" onclick="calculateAndDisplayRoute()"></button>   
                         <button type="button" class="btn btn-info img-persona" onclick="getLocation()"></button>
                         
                         <h5>Linea # .- Compañia, "Nombre de la ruta de guagua</h5>              
@@ -164,6 +164,7 @@
                         }
                     }
                     shownearLocation(coords[closerIndex][0], coords[closerIndex][1]);
+                    return new google.maps.LatLng(coords[closerIndex][0], coords[closerIndex][1]);
                 }
 
                 function showPosition(position) {
@@ -223,6 +224,35 @@
                     marker.setMap(map);
                 }
 
+                function calculateAndDisplayRoute(){
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(route);
+                    } else {
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                }
+                
+                function route(dest) {
+                    var directionsDisplay = new google.maps.DirectionsRenderer();// also, constructor can get "DirectionsRendererOptions" object
+                    directionsDisplay.setMap(map); // map should be already initialized.
+
+                    var request = {
+                        origin : new google.maps.LatLng(28.108767, -15.415788),
+                        destination : new google.maps.LatLng(dest.coords.latitude, dest.coords.longitude),
+                        travelMode : google.maps.TravelMode.TRANSIT,
+                        transitOptions: {
+                            departureTime: new Date()
+                        }
+                    };
+                    var directionsService = new google.maps.DirectionsService(); 
+                    directionsService.route(request, function(response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setDirections(response);
+                            alert(response.routes[0].legs[0].duration.text);
+                        }
+                    });
+                }
+                
                 function clearOverlays() {
                     for (var i = 0; i < markersArray.length; i++) {
                         markersArray[i].setMap(null);

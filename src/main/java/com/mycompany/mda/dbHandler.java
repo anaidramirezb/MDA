@@ -121,7 +121,7 @@ public class dbHandler {
     }
 
     private static String getDBLocation() {
-        return "jdbc:sqlite:C:\\Users\\hecku\\OneDrive\\Documentos\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
+        return "jdbc:sqlite:C:\\Users\\Heckutoru\\Documents\\NetBeansProjects\\MDA-master\\src\\main\\webapp\\mda.db";
     }
 
 }
