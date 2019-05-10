@@ -34,12 +34,12 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-static-top">
 
                         <IMG SRC="styles/menu/GUAGUAS_GC.png" Width = 10% style="margin-left:30px">
-                        <button type="button" class="btn btn-info img-ubi" onclick="getLocation()"></button>
-                        <button type="button" class="btn btn-info img-stop" onclick="getCurrent()"></button>
-                        <button type="button" class="btn btn-info img-signo" onclick="calculateAndDisplayRoute()"></button>   
-                        <button type="button" class="btn btn-info img-persona" onclick="getLocation()"></button>
-                        
-                        <h5>Linea # .- Compañia, "Nombre de la ruta de guagua</h5>              
+                        <button title= "Mi ubicacion" type="button" class="btn btn-info img-ubi" onclick="getLocation()"></button>
+                        <button title= "Parada mas cercana" type="button" class="btn btn-info img-stop" onclick="getCurrent()"></button>
+                        <button title= "Boton sin funcion" type="button" class="btn btn-info img-persona" ></button>
+                        <button title= "Tiempo a parada" type="button" class="btn btn-info img-signo" onclick="calculateAndDisplayRoute()"></button>   
+                        <div id="resultado" class="res"> min </div>
+                                   
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                           <span class="navbar-toggler-icon"></span>
                         </button>
@@ -53,8 +53,7 @@
                                 <a class="dropdown-item" href="adminData.jsp">Listado Guaguas</a>
                                 <a class="dropdown-item" href="addroutes.jsp">Agregar Ruta</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="adminDetails.jsp">Información</a>
-                                <a class="dropdown-item" href="addDetails.jsp">Agregar Detalles</a>
+                                <a class="dropdown-item" href="#">Información</a>
                               </div>
                             </li>
                           </ul>
@@ -89,7 +88,7 @@
 
         
         <script>
-
+ 
             var coords = new Array();
             <%
                 ArrayList<Buses> busList = null;
@@ -132,6 +131,7 @@
                 }
 
                 function getLocation() {
+                   
                     if (navigator.geolocation) {
                        navigator.geolocation.getCurrentPosition(showPosition);
                      } else {
@@ -225,6 +225,8 @@
                     marker.setMap(map);
                 }
 
+
+                
                 function calculateAndDisplayRoute(){
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(route);
@@ -238,8 +240,8 @@
                     directionsDisplay.setMap(map); // map should be already initialized.
 
                     var request = {
-                        origin : new google.maps.LatLng(28.108767, -15.415788),
-                        destination : new google.maps.LatLng(dest.coords.latitude, dest.coords.longitude),
+                        origin : new google.maps.LatLng(dest.coords.latitude,dest.coords.longitude ),
+                        destination : new google.maps.LatLng(28.108767,-15.415788),
                         travelMode : google.maps.TravelMode.TRANSIT,
                         transitOptions: {
                             departureTime: new Date()
@@ -249,7 +251,9 @@
                     directionsService.route(request, function(response, status) {
                         if (status == google.maps.DirectionsStatus.OK) {
                             directionsDisplay.setDirections(response);
-                            alert(response.routes[0].legs[0].duration.text);
+                            // alert(response.routes[0].legs[0].duration.text);
+                             texto = response.routes[0].legs[0].duration.text;
+                            document.getElementById('resultado').innerHTML = texto;
                         }
                     });
                 }
@@ -261,6 +265,8 @@
                     }
                     markersArray.length = 0;
                 }
+
+
              
         </script>
         <script async defer
