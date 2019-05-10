@@ -53,7 +53,7 @@
                                 <a class="dropdown-item" href="adminData.jsp">Listado Guaguas</a>
                                 <a class="dropdown-item" href="addroutes.jsp">Agregar Ruta</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Información</a>
+                                <a class="dropdown-item" href="adminDetails.jsp">Información</a>
                               </div>
                             </li>
                           </ul>
