@@ -36,7 +36,7 @@
                         <IMG SRC="styles/menu/GUAGUAS_GC.png" Width = 10% style="margin-left:30px">
                         <button title= "Mi ubicacion" type="button" class="btn btn-info img-ubi" onclick="getLocation()"></button>
                         <button title= "Parada mas cercana" type="button" class="btn btn-info img-stop" onclick="getCurrent()"></button>
-                        <button title= "Boton sin funcion" type="button" class="btn btn-info img-persona" ></button>
+                        <button title= "Mostrar guaguas" type="button" class="btn btn-info img-persona" onclick="getBus()" ></button>
                         <button title= "Tiempo a parada" type="button" class="btn btn-info img-signo" onclick="calculateAndDisplayRoute()"></button>   
                         <div id="resultado" class="res"> min </div>
                                    
@@ -148,6 +148,18 @@
                     }
                 }
 
+                function getBus() {
+                    if (navigator.geolocation) {
+                        var rango = Math.floor((Math.random() * coords.length) + 1);
+                        showBus(coords[rango][0],coords[rango][1]);
+                        navigator.geolocation.getCurrentPosition(showBus);
+                      
+                    } else {
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                }
+
+
                 function showClosest(position) {
                     var currentLatitude = Math.abs(position.coords.latitude);
                     var currentLongitude = Math.abs(position.coords.longitude);
@@ -217,6 +229,15 @@
                     marker.setMap(map);
                 }
 
+                  
+                function showBus(latitude, longitude) {
+                    var iconBase = 'styles/menu/BusP.png';
+                    var uluru = {lat: latitude, lng: longitude};
+                    var marker = new google.maps.Marker({position: uluru, map: map, icon: iconBase});
+                    markersArray.push(marker);
+                    marker.setMap(map);
+                }
+                  
                 function shownearLocation(latitude, longitude) {
                     var iconBase = 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png';
                     var uluru = {lat: latitude, lng: longitude};
