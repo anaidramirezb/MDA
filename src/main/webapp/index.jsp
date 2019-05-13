@@ -54,6 +54,7 @@
                                 <a class="dropdown-item" href="addroutes.jsp">Agregar Ruta</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Información</a>
+                                  <a class="dropdown-item" href="addDetails.jsp">Agregar Detalles</a>
                               </div>
                             </li>
                           </ul>
